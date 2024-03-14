@@ -206,19 +206,34 @@ class ZabbixSender
      * Make payload for Zabbix server with special Zabbix header
      * and datalen
      *
-     * https://www.zabbix.com/documentation/3.4/manual/appendix/protocols/header_datalen
+     * https://www.zabbix.com/documentation/current/en/manual/appendix/protocols/header_datalen
      */
     private function makePayload(ZabbixPacket $packet): string
     {
         $encodedPacket = json_encode($packet);
+        return self::zbxCreateHeader(strlen($encodedPacket)) . $encodedPacket;
+    }
 
-        return pack(
-            "a4CPa*",
-            self::HEADER,
-            self::VERSION,
-            strlen($encodedPacket),
-            $encodedPacket
-        );
+    /**
+     * Zabbix Packet Header
+     *
+     * @param int $plain_data_size
+     * @param int $compressed_data_size
+     *
+     * @return string
+     */
+    public static function zbxCreateHeader($plain_data_size, $compressed_data_size = null): string
+    {
+        $flags = self::VERSION;
+        if (is_null($compressed_data_size)) {
+            $datalen = $plain_data_size;
+            $reserved = 0;
+        } else {
+            $flags |= 0x02;
+            $datalen = $compressed_data_size;
+            $reserved = $plain_data_size;
+        }
+        return self::HEADER . chr($flags) . pack("VV", $datalen, $reserved);
     }
 
     /**
