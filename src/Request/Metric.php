@@ -42,7 +42,7 @@ class Metric implements \JsonSerializable
      *
      * @param string $hostname
      */
-    public function withHostname(string $hostname)
+    public function withHostname(string $hostname): static
     {
         $this->hostname = $hostname;
         return $this;
@@ -53,13 +53,14 @@ class Metric implements \JsonSerializable
      *
      * @param int $timestamp
      */
-    public function withTimestamp(int $timestamp)
+    public function withTimestamp(int $timestamp): static
     {
         $this->timestamp = $timestamp;
         return $this;
     }
-    
-    public function jsonSerialize()
+
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize(): array
     {
         return [
             'host' => $this->hostname,

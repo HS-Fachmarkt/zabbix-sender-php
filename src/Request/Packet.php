@@ -19,7 +19,7 @@ class Packet implements \JsonSerializable
         $this->packet['request'] = $request;
     }
 
-    public function addMetric(ZabbixMetric $metric)
+    public function addMetric(ZabbixMetric $metric): void
     {
         $this->packet['data'][] = $metric;
     }
@@ -29,7 +29,8 @@ class Packet implements \JsonSerializable
         return $this->packet;
     }
 
-    public function jsonSerialize()
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize(): array
     {
         return $this->packet;
     }
