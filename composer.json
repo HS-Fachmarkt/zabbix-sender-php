@@ -1,5 +1,5 @@
 {
-    "name": "zarplata/zabbix-sender",
+    "name": "hs-fachmarkt/zabbix-sender",
     "type": "library",
     "license": "MIT",
     "authors": [
