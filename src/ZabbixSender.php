@@ -217,15 +217,11 @@ class ZabbixSender
     /**
      * Zabbix Packet Header
      *
-     * @param int $plain_data_size
-     * @param int $compressed_data_size
-     *
-     * @return string
      */
-    public static function zbxCreateHeader($plain_data_size, $compressed_data_size = null): string
+    public static function zbxCreateHeader(int $plain_data_size, int|null $compressed_data_size = null): string
     {
         $flags = self::VERSION;
-        if (is_null($compressed_data_size)) {
+        if ($compressed_data_size === null) {
             $datalen = $plain_data_size;
             $reserved = 0;
         } else {
